@@ -42,8 +42,7 @@ export default defineConfig((/* ctx */) => {
       // https://v2.quasar.dev/quasar-cli-vite/page-routing-with-vue-router#filename-based-routing
       // filenameBasedRouting: true,
 
-      // Hash-режим роутера: у ЛР2 (Capacitor, Electron) застосунок відкривається з file://,
-      // де history-режим не працює. Встановлено зараз, щоб не переробляти в ЛР2.
+      // hash-режим, бо в ЛР2 (Capacitor, Electron) застосунок відкривається з file://
       vueRouterMode: 'hash',
       // vueRouterBase,
 

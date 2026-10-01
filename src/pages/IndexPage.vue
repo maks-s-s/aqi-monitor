@@ -1,8 +1,6 @@
-<!-- Єдина сторінка застосунку: пошук міста і список відстежуваних міст. -->
 <template>
   <q-page padding>
     <div class="page-content">
-      <!-- @select — підписка на подію компонента; передаємо місто в store. -->
       <CitySearch @select="store.addCity" />
 
       <div class="row items-center justify-between q-mt-lg q-mb-md">
@@ -21,7 +19,6 @@
         Список порожній. Знайдіть місто через поле пошуку.
       </div>
 
-      <!-- v-for з :key — Vue за id відрізняє картки при додаванні/видаленні. -->
       <div class="row q-col-gutter-md">
         <div v-for="city in store.cities" :key="city.id" class="col-12 col-sm-6 col-md-4">
           <CityCard :city="city" @remove="store.removeCity(city.id)" />
@@ -39,8 +36,6 @@ import CityCard from '@/components/CityCard.vue'
 
 const store = useCitiesStore()
 
-// onMounted — виконується один раз, коли сторінка з'явилась на екрані.
-// Список міст уже відновлено з localStorage, тут лише завантажуємо свіжі показники.
 onMounted(() => {
   store.refreshAll()
 })

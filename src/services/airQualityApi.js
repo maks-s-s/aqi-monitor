@@ -1,15 +1,9 @@
-// Сервісний шар: усі HTTP-запити до Open-Meteo (геокодування та якість повітря).
-// Використовується вбудований fetch — без axios: зайва залежність не потрібна,
-// а fetch однаково працює в браузері, Electron і WebView Android.
-
 const GEOCODING_URL = 'https://geocoding-api.open-meteo.com/v1/search'
 const AIR_QUALITY_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality'
 
-// Показники, які запитуємо в Air Quality API.
 const AIR_QUALITY_FIELDS = 'european_aqi,us_aqi,pm10,pm2_5,ozone,nitrogen_dioxide'
 
-// Спільна функція GET-запиту. fetch кидає виняток лише при збої мережі,
-// а HTTP-помилки (4xx/5xx) треба перевіряти вручну через response.ok.
+// fetch не кидає виняток на 4xx/5xx, тому перевіряємо response.ok
 async function getJson (url) {
   let response
   try {
@@ -23,9 +17,7 @@ async function getJson (url) {
   return response.json()
 }
 
-// Пошук міст за назвою. Повертає масив збігів (може бути порожнім).
 export async function searchCities (name) {
-  // URLSearchParams коректно кодує кирилицю та пробіли в назві міста.
   const params = new URLSearchParams({
     name,
     count: 5,
@@ -34,14 +26,10 @@ export async function searchCities (name) {
   })
   const data = await getJson(`${GEOCODING_URL}?${params}`)
 
-  // Якщо нічого не знайдено, ключ results у відповіді відсутній зовсім
-  // (а не порожній масив), тому повертаємо [] самі.
+  // якщо нічого не знайдено, ключа results у відповіді немає
   return data.results ?? []
 }
 
-// Поточні показники якості повітря за координатами.
-// Повертає { values, units }: values — значення (окремі можуть бути null),
-// units — одиниці виміру з current_units.
 export async function fetchAirQuality (latitude, longitude) {
   const params = new URLSearchParams({
     latitude,

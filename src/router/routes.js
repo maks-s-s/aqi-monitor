@@ -7,8 +7,7 @@ const routes = [
     ],
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
+  // Має бути останнім: будь-яка невідома адреса веде на сторінку 404.
   {
     path: '/:catchAll(.*)*',
     component: () => import('@/pages/ErrorNotFound.vue'),
